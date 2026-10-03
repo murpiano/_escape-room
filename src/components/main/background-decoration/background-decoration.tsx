@@ -16,6 +16,10 @@ function BackgroundDecoration({
   const backgroundImageWebp = quest?.coverImgWebp;
   const backgroundImage = quest?.coverImg;
 
+  if (!backgroundImage) {
+    return <div className="decorated-page__decor" aria-hidden="true" />;
+  }
+
   return (
     <div className="decorated-page__decor" aria-hidden="true">
       <picture>

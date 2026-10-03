@@ -1,4 +1,4 @@
-import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 import {
   UserDataForBooking,
   UserDataForLogin,
@@ -6,22 +6,14 @@ import {
 import { UserDataFieldType } from '../../types/common';
 import { ErrorMessage } from '@hookform/error-message';
 import { store } from '../../store/store';
-import { HTMLInputTypeAttribute } from 'react';
 
-type InputsProps<T extends FieldValues> = {
-  type: HTMLInputTypeAttribute;
-  name: Path<T>;
-  placeholder?: string;
-  register: UseFormRegister<T>;
-};
-
-type UserDataProps = {
+type UserDataProps<T extends FieldValues = FieldValues> = {
   field: UserDataFieldType;
-  register: UseFormRegister<InputsProps>
-  errors: FieldErrors<FieldErrors>;
+  register: UseFormRegister<T>;
+  errors: FieldErrors<T>;
 };
 
-function UserData({ field, register, errors }: UserDataProps): JSX.Element {
+function UserData<T extends FieldValues>({ field, register, errors }: UserDataProps<T>): JSX.Element {
   const userData = Object.keys(UserDataForBooking).includes(field)
     ? UserDataForBooking
     : UserDataForLogin;
@@ -48,7 +40,7 @@ function UserData({ field, register, errors }: UserDataProps): JSX.Element {
         {label}
       </label>
       <input
-        {...register(name, {
+        {...register(name as Parameters<typeof register>[0], {
           required: {
             value: true,
             message: 'Заполните',

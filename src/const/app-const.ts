@@ -66,12 +66,12 @@ const QuestType = {
 
 const MapSetting = {
   MapUrl:
-    'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   MapCopyright:
-    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   Markers: {
-    DefaultMarker: '../../public/img/svg/pin-default.svg',
-    ActiveMarker: '../../public/img/svg/pin-active.svg',
+    DefaultMarker: '/img/svg/pin-default.svg',
+    ActiveMarker: '/img/svg/pin-active.svg',
   },
   Zoom: 15.4,
 } as const;

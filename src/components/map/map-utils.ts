@@ -13,12 +13,14 @@ const defaultCustomIcon = new Icon({
   iconUrl: MapSetting.Markers.DefaultMarker,
   iconSize: [27, 40],
   iconAnchor: [15, 40],
+  shadowUrl: '',
 });
 
 const currentCustomIcon = new Icon({
   iconUrl: MapSetting.Markers.ActiveMarker,
   iconSize: [27, 40],
   iconAnchor: [15, 40],
+  shadowUrl: '',
 });
 
 const adaptLocation = ([lat, lng]: Coords) => ({
@@ -50,32 +52,41 @@ const useUpdateMarkers = (
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
-      if (coords && activeBooking && onClick && booking) {
+
+      if (coords && !isBooking) {
+        new Marker({
+          lat: coords[0],
+          lng: coords[1],
+        })
+          .setIcon(defaultCustomIcon)
+          .addTo(markerLayer);
+      }
+
+      if (coords && activeBooking && onClick && booking && isBooking) {
         new Marker({
           lat: coords[0],
           lng: coords[1],
         })
           .setIcon(currentCustomIcon)
           .addTo(markerLayer);
-        if (isBooking) {
-          booking.forEach((place) => {
-            const marker = new Marker({
-              lat: place.location.coords[0],
-              lng: place.location.coords[1],
-            }).on('click', () => onClick(place));
-            marker
-              .setIcon(
-                activeBooking.id && place.id === activeBooking.id
-                  ? currentCustomIcon
-                  : defaultCustomIcon
-              )
-              .addTo(markerLayer);
-          });
-        }
-        return () => {
-          map.removeLayer(markerLayer);
-        };
+        booking.forEach((place) => {
+          const marker = new Marker({
+            lat: place.location.coords[0],
+            lng: place.location.coords[1],
+          }).on('click', () => onClick(place));
+          marker
+            .setIcon(
+              activeBooking.id && place.id === activeBooking.id
+                ? currentCustomIcon
+                : defaultCustomIcon
+            )
+            .addTo(markerLayer);
+        });
       }
+
+      return () => {
+        map.removeLayer(markerLayer);
+      };
     }
   }, [map, booking, activeBooking, coords, bemBlock, isBooking, onClick]);
 };
